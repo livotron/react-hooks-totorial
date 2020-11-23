@@ -1,13 +1,21 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AlertContext } from "../context/alert/alertContext";
 
 
 export const Search = () => {
 
+    const [value,setValue] = useState('')
+
     const { show} = useContext(AlertContext);
     const onSubmit = (event) => {
-        if(event.key === 'Enter') {
-            show('This is alert')
+        if(event.key !== 'Enter') {
+            return;
+        }
+
+        if(value.trim()) {
+            console.log('Make request with ', value)
+        } else {
+            show('Enter user data')
         }
 
     }
@@ -18,6 +26,8 @@ export const Search = () => {
                 className="form-control"
                 placeholder="Insert user Nickname"
                 onKeyPress={onSubmit}
+                value={value}
+                onChange={event => setValue(event.target.value)}
             />
         </div>
     );

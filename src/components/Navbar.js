@@ -8,12 +8,12 @@ function Navbar() {
                 Github Search
         </div>
             <ul className="navbar-nav">
-                <lid className="nav-item">
+                <li className="nav-item">
                     <NavLink exact to="/" className="nav-link">Main</NavLink>
-                </lid>
-                <lid className="nav-item">
+                </li>
+                <li className="nav-item">
                     <NavLink to="/about" className="nav-link">Info</NavLink>
-                </lid>
+                </li>
             </ul>
         </nav>
     );
