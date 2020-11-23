@@ -2,6 +2,15 @@ import { useReducer } from 'react';
 import { CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING } from '../types';
 import { GithubContext } from './githubContext';
 import { githubReducer } from './githubReducer';
+import axios from 'axios';
+
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+
+const withCreds = url => {
+    return `https://api.github.com/${url}client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
+}
+
 
 export const GithubState = ({children}) => {
     const initialState = {
@@ -11,35 +20,47 @@ export const GithubState = ({children}) => {
         repos: []
     }
     const [state, dispatch] = useReducer(githubReducer, initialState);
-
+    console.log(state)
     const search = async value => {
         setLoading();
-        //...
+        
+        console.log(value, CLIENT_ID, CLIENT_SECRET)
+        const response = await axios.get(
+            withCreds(`search/users?q=${value}&`)
+        )
 
         dispatch({
             type: SEARCH_USERS,
-            payload: []
+            payload: response.data.items
         })
     }
 
     const getUser = async name => {
         setLoading();
-        //...
+        
+        
+        const response = await axios.get(
+            withCreds(`users/${name}?`)
+        )
 
         dispatch({
             type: GET_USER,
-            payload: []
+            payload: response.data
         })
     }
 
     
     const getRepos = async name => {
         setLoading();
-        //...
+        
+        
+        const response = await axios.get(
+            withCreds(`users/${name}/repos?per_page=5&`)
+        )
 
         dispatch({
             type: GET_REPOS,
-            payload: []
+            payload: response.data
         })
     }
 
@@ -47,11 +68,11 @@ export const GithubState = ({children}) => {
 
     const setLoading= () => dispatch({type: SET_LOADING});
 
-    const {user, users, repos, loading} = state
+    const { user, users, repos, loading} = state
 
     return (
         <GithubContext.Provider value={{
-            setLoading, search, getUser, getRepos, clearUsers
+            setLoading, search, getUser, getRepos, clearUsers, user, users, repos, loading
         }}>
             { children }
         </GithubContext.Provider>

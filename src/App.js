@@ -5,10 +5,10 @@ import { Profile } from './pages/Profile';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Alert } from './components/Alert';
 import { AlertState } from './context/alert/alertState';
-import { GithubContext } from './context/github/githubContext';
+import { GithubState } from './context/github/GithubState';
 function App() {
   return (
-    <GithubContext>
+    <GithubState>
       <AlertState>
         <BrowserRouter>
           <Navbar />
@@ -23,7 +23,7 @@ function App() {
           </div>
         </BrowserRouter>
       </AlertState>
-    </GithubContext>
+    </GithubState>
   );
 }
 
